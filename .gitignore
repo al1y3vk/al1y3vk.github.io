@@ -1,0 +1,13 @@
+# Source media — kept locally, never in the repo.
+# Videos live on YouTube (unlisted) and are embedded; full-size photos are
+# compressed into assets/img/dog/ for the site.
+/dog/
+
+# Tooling / OS artifacts
+.playwright-mcp/
+*.png.tmp
+.DS_Store
+*.log
+
+# Local editor/agent config
+.claude/

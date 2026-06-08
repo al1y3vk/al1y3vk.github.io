@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kanan Aliyev</title>
+  <meta name="description" content="Kanan Aliyev — developer and researcher. Multi-agent systems and robotics.">
+
+  <link rel="icon" href="assets/img/k.ico">
+
+  <!-- Fonts: one serif family for display; body uses the system sans stack -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/site.css">
+
+  <!-- Set theme before paint to avoid a flash of the wrong colors -->
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("theme");
+        if (!t) t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html">Kanan Aliyev</a>
+      <nav class="nav">
+        <a href="index.html" aria-current="page">Home</a>
+        <a href="projects.html">Projects</a>
+        <a href="assets/cv.pdf" target="_blank" rel="noopener">CV</a>
+        <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+
+      <section class="intro">
+        <div>
+          <h1>Kanan Aliyev</h1>
+          <p class="tagline">Developer · Researcher</p>
+
+          <!-- TODO(kanan): refresh this bio. The old site still said
+               "looking for Summer 2025 internships" — replaced with neutral
+               text below. Send me the current version. -->
+          <p>
+            Hi, I'm Kenny. I'm a Graduate Researcher
+            <a href="https://www.osgil.org/" target="_blank" rel="noopener">@ Osgil Defence</a>,
+            where we work to make AI agents as trustworthy as possible.
+          </p>
+          <p>
+            I'm also a Master's student at
+            <a href="https://www.northeastern.edu/" target="_blank" rel="noopener">Northeastern University</a>.
+            I'm interested in multi-agent systems and robotics.
+          </p>
+
+          <div class="social">
+            <a href="https://github.com/al1y3vk" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://www.linkedin.com/in/al1y3vk/" target="_blank" rel="noopener">LinkedIn</a>
+            <a href="mailto:business@kananaliyev.org">Email</a>
+          </div>
+        </div>
+
+        <img class="intro-photo" src="assets/img/prof-actual.jpg" alt="Kanan Aliyev">
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>© 2026 Kanan Aliyev</span>
+      <span>business@kananaliyev.org</span>
+    </div>
+  </footer>
+
+  <script src="assets/js/theme.js"></script>
+</body>
+</html>

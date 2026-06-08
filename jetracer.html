@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom JetRacer — Kanan Aliyev</title>
+  <meta name="description" content="Autonomous RC car on NVIDIA Jetson with a trained road-following vision model.">
+
+  <link rel="icon" href="assets/img/k.ico">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/site.css">
+
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("theme");
+        if (!t) t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html">Kanan Aliyev</a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="projects.html">Projects</a>
+        <a href="assets/cv.pdf" target="_blank" rel="noopener">CV</a>
+        <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <a class="back" href="projects.html">← Projects</a>
+      <h1>Custom JetRacer</h1>
+      <p class="tagline">An autonomous RC car that drives itself around a track.</p>
+
+      <ul class="meta">
+        <li><strong>Purpose</strong> — Capstone project</li>
+        <li><strong>Stack</strong> — NVIDIA Jetson, PyTorch, Computer Vision</li>
+        <li><strong>Code</strong> — <a href="https://github.com/al1y3vk/custom-jetracer" target="_blank" rel="noopener">github.com/al1y3vk/custom-jetracer</a></li>
+      </ul>
+
+      <p>
+        A JetRacer platform running on an NVIDIA Jetson, trained to follow a road
+        from its onboard camera. I collected and labeled driving data, trained a
+        convolutional model in PyTorch to predict steering, and deployed it for
+        real-time inference on the car.
+      </p>
+
+      <div class="media">
+        <img src="assets/img/details/racer1.png" alt="JetRacer build">
+        <img src="assets/img/details/racer2.png" alt="JetRacer on the track">
+        <div class="embed">
+          <iframe src="https://www.youtube.com/embed/RwxOPSey_p4"
+                  title="Custom JetRacer demo" allowfullscreen
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>© 2026 Kanan Aliyev</span>
+      <span>business@kananaliyev.org</span>
+    </div>
+  </footer>
+
+  <script src="assets/js/theme.js"></script>
+</body>
+</html>

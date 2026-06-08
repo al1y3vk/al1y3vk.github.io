@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Companion Robot Dog — Kanan Aliyev</title>
+  <meta name="description" content="Building a quadruped robot dog into a delivery-and-conversation companion: highlights and hard-won lessons.">
+
+  <link rel="icon" href="assets/img/k.ico">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/site.css">
+
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("theme");
+        if (!t) t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html">Kanan Aliyev</a>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="projects.html">Projects</a>
+        <a href="assets/cv.pdf" target="_blank" rel="noopener">CV</a>
+        <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <a class="back" href="projects.html">← Projects</a>
+      <h1>Companion Robot Dog</h1>
+
+      <!-- TODO(kanan): edit this overview — drafted from your description. -->
+      <p class="lede">
+        A quadruped robot dog built to be a capable companion in the spaces you spend
+        the most time in — able to fetch and deliver things to you, and to listen and
+        talk back. Onboard compute runs on a Mac mini mounted to the robot.
+      </p>
+
+      <h2>Highlights</h2>
+      <p class="section-note">Short clips from the build. More coming as I dig through the screenshot stash.</p>
+
+      <!-- TODO(kanan): confirm this is the right chronological order. -->
+      <div class="highlight">
+        <div class="embed">
+          <iframe src="https://www.youtube-nocookie.com/embed/Sr86Nj4kaLM"
+                  title="Initial teleop" allowfullscreen
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+        </div>
+        <h3>Initial teleop</h3>
+        <p>First driving the dog around by hand — baseline control before any autonomy.</p>
+      </div>
+
+      <div class="highlight">
+        <div class="embed">
+          <iframe src="https://www.youtube-nocookie.com/embed/lCapoCXjhko"
+                  title="Long working" allowfullscreen
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+        </div>
+        <h3>Navigation, first time working</h3>
+        <p>The first sustained autonomous run — navigation finally holding together end to end.</p>
+      </div>
+
+      <div class="highlight">
+        <div class="embed">
+          <iframe src="https://www.youtube-nocookie.com/embed/Vx-2T6Q8Zbk"
+                  title="Home to arm" allowfullscreen
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+        </div>
+        <h3>Home → arm</h3>
+        <p>Navigating from the home position to the arm — a leg of the delivery task.</p>
+      </div>
+
+      <div class="highlight">
+        <div class="embed">
+          <iframe src="https://www.youtube-nocookie.com/embed/pGbXz-Lilxw"
+                  title="Arm to board" allowfullscreen
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
+        </div>
+        <h3>Arm → board</h3>
+        <p>The next leg, arm to board — chaining waypoints toward a full delivery.</p>
+      </div>
+
+      <h2>Challenges &amp; hurdles</h2>
+
+      <div class="challenge">
+        <img src="assets/img/dog/broken-leg-cable.jpg" alt="Severed cable in the front-right leg">
+        <h3>A severed leg cable</h3>
+        <p class="when">March 4</p>
+        <p>
+          New code, a new controller, first day mapping in the lab. I powered the dog on the
+          usual way — short press, long press, wait for the white neck LEDs to flash ready —
+          grabbed the controller to stand it up, and nothing. That was new.
+        </p>
+        <p>
+          The mobile app (it connects to the dog's onboard Wi-Fi for temps, battery, joints,
+          connection) gave it away fast: the dog believed it was standing, but showed its
+          front-right leg still folded. Checking the wiring from the body to the legs, there
+          it was — a tiny severed cable in the front-right leg. Annoying, and it cost a few
+          days of testing, but as failures go this was the best case: found in minutes, not
+          hours.
+        </p>
+      </div>
+
+      <div class="challenge">
+        <img src="assets/img/dog/designing-fans-for-cooling.jpg" alt="Custom-printed Mac mini case with Noctua fans">
+        <h3>Thermal shutdowns and a custom case</h3>
+        <p class="when">mid–late March</p>
+        <p>
+          During early teleop and mapping the dog kept dropping the connection to the Mac.
+          I shrugged the first one off and restarted — but a "restart" here means walking the
+          dog back to its home coordinates, manually relaunching the Mac, reopening the whole
+          stack. It cut out again. And again.
+        </p>
+        <p>
+          On the third round I watched temps and memory: with the full stack running, the
+          temperature just climbed until emergency protection cut the system off. The cause
+          made sense — the Mac mini's case had been redesigned and custom-printed to mount on
+          the robot, which threw out whatever cooling the original case provided. So I
+          iterated on yet another print, this time to fit a pair of 5V Noctua PWM fans right
+          on the heatsink. Three redesigns later, the last version was ready in late March —
+          and the temperature problems were gone for good.
+        </p>
+      </div>
+
+      <h2>Gallery</h2>
+      <!-- TODO(kanan): optional — a few words on how/where the lidar and camera were
+           mounted, since these photos happen to document that evolution. -->
+      <div class="gallery">
+        <figure>
+          <img src="assets/img/dog/first-boot-woc.jpg" alt="First boot with the Mac mini connected">
+          <figcaption>First successful boot with the Mac mini connected to the dog.</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/img/dog/debug.jpg" alt="Dog on the table with legs bent upward">
+          <figcaption>On the bench for the first time, legs folded up for debugging. It looked ridiculous.</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/img/dog/during-teleop.jpg" alt="Still frame from the first teleop run">
+          <figcaption>A frame grabbed from the first teleop run.</figcaption>
+        </figure>
+        <figure>
+          <img src="assets/img/dog/pres-spot.jpg" alt="The dog and poster at the Northeastern presentation">
+          <figcaption>My spot at the Northeastern presentation — dog on the floor, poster on its stand.</figcaption>
+        </figure>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>© 2026 Kanan Aliyev</span>
+      <span>business@kananaliyev.org</span>
+    </div>
+  </footer>
+
+  <script src="assets/js/theme.js"></script>
+</body>
+</html>
