@@ -6,7 +6,7 @@
 /ms-thesis/
 
 # Local working notes / exported chat transcripts — not for the public site.
-v0-progress.txt
+chats/
 
 # Tooling / OS artifacts
 .playwright-mcp/
