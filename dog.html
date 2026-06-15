@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Companion Robot Dog — Kanan Aliyev</title>
-  <meta name="description" content="Building a quadruped robot dog into a delivery-and-conversation companion: highlights and hard-won lessons.">
+  <meta name="description" content="Voice-commanded autonomous navigation on a Unitree Go1: build highlights and hardware hurdles.">
 
   <link rel="icon" href="assets/img/k.ico">
 
@@ -30,9 +30,9 @@
     <div class="wrap">
       <a class="brand" href="index.html">Kanan Aliyev</a>
       <nav class="nav">
-        <a href="index.html">Home</a>
-        <a href="projects.html">Projects</a>
-        <a href="assets/cv.pdf" target="_blank" rel="noopener">CV</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#projects">Projects</a>
+        <a href="assets/Kanan-Aliyev-CV.pdf" target="_blank" rel="noopener">CV</a>
         <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
       </nav>
     </div>
@@ -40,18 +40,21 @@
 
   <main>
     <div class="wrap">
-      <a class="back" href="projects.html">← Projects</a>
+      <a class="back" href="index.html#projects">← Projects</a>
       <h1>Companion Robot Dog</h1>
 
-      <!-- TODO(kanan): edit this overview — drafted from your description. -->
-      <p class="lede">
-        A quadruped robot dog built to be a capable companion in the spaces you spend
-        the most time in — able to fetch and deliver things to you, and to listen and
-        talk back. Onboard compute runs on a Mac mini mounted to the robot.
+      <!-- TODO(kanan): tweak wording if you like — drafted from the repo. -->
+      <p class="tagline">
+        Voice-commanded autonomous navigation with Unitree Go1
       </p>
 
+      <ul class="meta">
+        <li><strong>Purpose</strong> — Master's project</li>
+        <li><strong>Stack</strong> — Unitree Go1 · ROS 2 + Nav2 · Whisper STT · Claude (tool-use) · Piper TTS · Mac mini M1</li>
+        <li><strong>Code</strong> — <a href="https://github.com/al1y3vk/go1-voice-nav" target="_blank" rel="noopener">github.com/al1y3vk/go1-voice-nav</a></li>
+      </ul>
+
       <h2>Highlights</h2>
-      <p class="section-note">Short clips from the build. More coming as I dig through the screenshot stash.</p>
 
       <!-- TODO(kanan): confirm this is the right chronological order. -->
       <div class="highlight">
@@ -81,7 +84,8 @@
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
         </div>
         <h3>Home → arm</h3>
-        <p>Navigating from the home position to the arm — a leg of the delivery task.</p>
+        <p>Autonomous run from home to the arm — waypoints are named after real objects
+          in the demo room.</p>
       </div>
 
       <div class="highlight">
@@ -91,10 +95,10 @@
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
         </div>
         <h3>Arm → board</h3>
-        <p>The next leg, arm to board — chaining waypoints toward a full delivery.</p>
+        <p>The next leg, "arm" to "board" — chaining named waypoints into a longer route.</p>
       </div>
 
-      <h2>Challenges &amp; hurdles</h2>
+      <h2>Challenges</h2>
 
       <div class="challenge">
         <img src="assets/img/dog/broken-leg-cable.jpg" alt="Severed cable in the front-right leg">

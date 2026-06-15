@@ -2,6 +2,11 @@
 # Videos live on YouTube (unlisted) and are embedded; full-size photos are
 # compressed into assets/img/dog/ for the site.
 /dog/
+/ms-proj/
+/ms-thesis/
+
+# Local working notes / exported chat transcripts — not for the public site.
+v0-progress.txt
 
 # Tooling / OS artifacts
 .playwright-mcp/

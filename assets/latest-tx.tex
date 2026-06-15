@@ -1,0 +1,135 @@
+\documentclass[11pt, letterpaper]{article}
+
+\usepackage[left=0.55in, right=0.55in, top=0.5in, bottom=0.5in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[sfdefault]{roboto}  % Roboto Regular as body, Bold for headings
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage{fontawesome5}
+
+\hypersetup{
+    colorlinks=false,
+    hidelinks
+}
+
+\pagestyle{empty}
+
+% Section: bold, slightly larger, all-caps, with rule beneath
+\titleformat{\section}
+    {\bfseries\large}{}{0em}{\uppercase}[\vspace{1pt}\titlerule]
+\titlespacing{\section}{0pt}{8pt}{7pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlist[itemize]{leftmargin=1.4em, itemsep=1pt, topsep=0pt, partopsep=0pt, parsep=0pt}
+
+\newcommand{\bull}{\,·\,}
+
+% ─── Entry header: Company/Project + Date ───────────────────────────────────
+\newcommand{\entryhead}[2]{%
+    \noindent\textbf{#1}\hfill\textit{#2}\\[-5pt]%
+}
+
+% ─── Experience header: bold company, italic role, italic date ───────────────
+\newcommand{\exphead}[3]{%
+    \noindent\textbf{#1}, \textit{#2}\hfill\textit{#3}\\[-5pt]%
+}
+
+% ─── Sub-line: Role + Location ───────────────────────────────────────────────
+\newcommand{\entrysub}[2]{%
+    \noindent\textit{#1}\hfill#2\\[-5pt]%
+}
+
+% ─── Education header: no negative spacing (followed by entrysub, not itemize) ──
+\newcommand{\eduhead}[2]{%
+    \noindent\textbf{#1}\hfill\textit{#2}\\%
+}
+
+\begin{document}
+
+%% ── HEADER ──────────────────────────────────────────────────────────────────
+\begin{center}
+    {\LARGE\bfseries Kanan Aliyev}\\[6pt]
+    {\small
+    \faMapMarker*~Seattle, WA \quad
+    \faPhone*~+1 (920) 441-6576 \quad
+    \faEnvelope~\href{mailto:business@kananaliyev.org}{business@kananaliyev.org}\\[4pt]
+    \faLinkedin~\href{https://www.linkedin.com/in/al1y3vk/}{linkedin.com/in/al1y3vk} \quad
+    \faGithub~\href{https://github.com/al1y3vk}{github.com/al1y3vk} \quad
+    \faGlobe~\href{https://kananaliyev.org}{kananaliyev.org}
+    }
+\end{center}
+
+\vspace{2pt}
+
+%% ── EXPERIENCE ──────────────────────────────────────────────────────────────
+\section{Experience}
+
+\exphead{YSAP Inc.}{AI Engineering Intern}{Sep 2025 -- January 2026}
+\begin{itemize}
+    \item Architected and deployed a production RAG system for semantic search over thousands of audio tracks and devices, achieving sub-2-second query response times
+    \item Built a real-time UI automation system that traverses and indexes entire application UI trees ({<}10-second traversal), enabling programmatic element manipulation and highlighting
+    \item Designed and implemented data pipelines for audio similarity search and cataloging, integrating vector embeddings with relational database storage to support lesson-building systems for tutors
+\end{itemize}
+
+\vspace{4pt}
+
+\exphead{Osgil Defense}{Graduate Researcher}{May 2024 -- Aug 2024}
+\begin{itemize}
+    \item Architected and deployed production AI trustworthiness evaluation system (PAX), implementing custom search tool integration for real-time fact-checking and citation verification across web sources
+    \item Built an end-to-end citation tracking pipeline with XML-style tagging, UUID-based source tracking, and a parallel web scraping system, processing search results for trustworthiness scoring and verification
+    \item Developed WebSocket streaming infrastructure for real-time LLM response delivery, integrated summarization for cost optimization, and established a GPU-enabled deployment environment
+\end{itemize}
+
+%% ── PROJECTS ────────────────────────────────────────────────────────────────
+\section{Projects}
+
+\entryhead{Go1 Voice Navigation}{January 2026 -- May 2026}
+\begin{itemize}
+    \item Built a voice-commanded navigation system on a Unitree Go1 quadruped, pairing a speech pipeline (Whisper STT $\to$ LLM tool-use $\to$ TTS) with autonomous Nav2 navigation over a Slamtec lidar SLAM map and a React web dashboard (live camera/lidar feeds, click-to-navigate)
+    \item Integrated a distributed ROS~2 / ROS~1 stack across an onboard Mac Mini M1 (Asahi Linux) on the dog, a Dockerized Slamtec SLAM driver bridged from ROS~1 into the ROS~2 host, and a remote GPU Whisper STT server --- all networked over a Tailscale mesh
+\end{itemize}
+
+\vspace{4pt}
+
+\entryhead{Custom JetRacer}{Sep 2023 -- Dec 2023}
+\begin{itemize}
+    \item Engineered an autonomous racing vehicle using Nvidia's Jetson platform, implementing real-time computer vision and deep learning for road following capabilities, achieving 65 FPS inference
+    \item Built an end-to-end data pipeline combining camera feeds, a click-based labeling interface, and live model evaluation for iterative model improvement
+\end{itemize}
+
+\vspace{4pt}
+
+\entryhead{TARS}{Apr 2023 -- May 2023}
+\begin{itemize}
+    \item Engineered a multi-agent AI system (349 GitHub stars), implementing specialized agents for research, content creation, and SEO analysis --- an early exploration of emergent coordination and collective intelligence across delegated agent roles
+    \item Developed a custom Unix command execution tool with secure shell operations, integrated Docker networking with URL transformation utilities for container deployment
+\end{itemize}
+
+%% ── EDUCATION & TOOLS ───────────────────────────────────────────────────────
+\section{Education \& Tools}
+
+\eduhead{Northeastern University}{Exp. Dec 2026}
+\entrysub{Master of Science in Computer Science}{Seattle, WA}
+\begin{itemize}
+    \item Thesis (in progress): \textit{Small Models, Structured Memory: Persistent Scene-Graph RAG for Latency-Aware Indoor Navigation on the Edge} --- integrating a latency-aware edge-deployed VLA policy with a hierarchical scene-graph knowledge base queried by a sub-1B VLM on a Unitree Go1 / Jetson Orin NX.
+\end{itemize}
+
+\vspace{6pt}
+
+\eduhead{Lawrence University}{Sep 2020 -- Jun 2024}
+\entrysub{Bachelor of Arts in Computer Science}{Appleton, WI}
+
+\vspace{8pt}
+
+\noindent\textbf{Languages \& Tools:}
+Python \bull Java \bull C++ \bull Git \bull Docker \bull Linux \bull .NET (C\#, WPF, UI~Automation) \bull React \bull FAISS \bull SQLite \bull Langchain \bull Crew.AI \bull Ableton Live \bull PyTorch \bull OpenCV \bull TensorRT \bull GCP~(Vertex) \bull AWS~(Lambda, S3, EC2) \bull Nvidia Jetson
+
+\vspace{4pt}
+
+\noindent\textbf{Core Competencies:}
+Vector Databases \& Embeddings \bull RAG Systems \& Semantic Search \bull ROS2 \bull NAV2 \bull SLAM \bull MoveIt2 \bull Real-time Data Processing \bull UI Automation \& Desktop Applications \bull Audio Processing \& Indexing \bull Deep Learning \bull Computer Vision \bull ETL Development \bull Performance Optimization
+
+\end{document}
