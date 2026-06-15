@@ -43,7 +43,6 @@
       <a class="back" href="index.html#projects">← Projects</a>
       <h1>Companion Robot Dog</h1>
 
-      <!-- TODO(kanan): tweak wording if you like — drafted from the repo. -->
       <p class="tagline">
         Voice-commanded autonomous navigation with Unitree Go1
       </p>
@@ -56,7 +55,6 @@
 
       <h2>Highlights</h2>
 
-      <!-- TODO(kanan): confirm this is the right chronological order. -->
       <div class="highlight">
         <div class="embed">
           <iframe src="https://www.youtube-nocookie.com/embed/Sr86Nj4kaLM"
@@ -64,7 +62,7 @@
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
         </div>
         <h3>Initial teleop</h3>
-        <p>First driving the dog around by hand — baseline control before any autonomy.</p>
+        <p>First time driving the dog around by hand to get baseline control before any autonomy.</p>
       </div>
 
       <div class="highlight">
@@ -74,7 +72,7 @@
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
         </div>
         <h3>Navigation, first time working</h3>
-        <p>The first sustained autonomous run — navigation finally holding together end to end.</p>
+        <p>The first sustained autonomous run, with navigation finally holding together end to end.</p>
       </div>
 
       <div class="highlight">
@@ -84,7 +82,7 @@
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
         </div>
         <h3>Home → arm</h3>
-        <p>Autonomous run from home to the arm — waypoints are named after real objects
+        <p>Autonomous run from home to the arm. The waypoints are named after real objects
           in the demo room.</p>
       </div>
 
@@ -95,7 +93,7 @@
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>
         </div>
         <h3>Arm → board</h3>
-        <p>The next leg, "arm" to "board" — chaining named waypoints into a longer route.</p>
+        <p>The next leg, "arm" to "board," chaining named waypoints into a longer route.</p>
       </div>
 
       <h2>Challenges</h2>
@@ -106,14 +104,19 @@
         <p class="when">March 4</p>
         <p>
           New code, a new controller, first day mapping in the lab. I powered the dog on the
-          usual way — short press, long press, wait for the white neck LEDs to flash ready —
+          usual way (short press, long press, wait for the white neck LEDs to flash ready),
           grabbed the controller to stand it up, and nothing. That was new.
         </p>
         <p>
-          The mobile app (it connects to the dog's onboard Wi-Fi for temps, battery, joints,
-          connection) gave it away fast: the dog believed it was standing, but showed its
+          I tried again, same thing. After the third try I was sure something was wrong, but what?
+          The dog had been working fine the day before, and I hadn't touched the legs or the body wiring
+          since then. I had a hunch it was a hardware issue though.
+        </p>
+        <p>
+          I opened the mobile app (it connects to the dog's onboard Wi-Fi for temps, battery, joints,
+          connection) and that gave it away: the dog believed it was standing, but showed its
           front-right leg still folded. Checking the wiring from the body to the legs, there
-          it was — a tiny severed cable in the front-right leg. Annoying, and it cost a few
+          it was: a tiny severed cable in the front-right leg. Annoying, and it cost a few
           days of testing, but as failures go this was the best case: found in minutes, not
           hours.
         </p>
@@ -122,27 +125,25 @@
       <div class="challenge">
         <img src="assets/img/dog/designing-fans-for-cooling.jpg" alt="Custom-printed Mac mini case with Noctua fans">
         <h3>Thermal shutdowns and a custom case</h3>
-        <p class="when">mid–late March</p>
+        <p class="when">mid-to-late March</p>
         <p>
           During early teleop and mapping the dog kept dropping the connection to the Mac.
-          I shrugged the first one off and restarted — but a "restart" here means walking the
+          I shrugged the first one off and restarted. But a "restart" here means walking the
           dog back to its home coordinates, manually relaunching the Mac, reopening the whole
           stack. It cut out again. And again.
         </p>
         <p>
-          On the third round I watched temps and memory: with the full stack running, the
-          temperature just climbed until emergency protection cut the system off. The cause
-          made sense — the Mac mini's case had been redesigned and custom-printed to mount on
-          the robot, which threw out whatever cooling the original case provided. So I
-          iterated on yet another print, this time to fit a pair of 5V Noctua PWM fans right
-          on the heatsink. Three redesigns later, the last version was ready in late March —
+          On the fourth round I watched temps and memory: with the full stack running, the
+          temperature just climbed until emergency protection shut the system off. That made sense, but
+          it was still annoying. The Mac mini's case had been redesigned and custom-printed to mount on
+          the robot, which threw out whatever cooling the original case provided. So I had to design and
+          iterate on yet another print, this time to fit a pair of 5V Noctua PWM fans right
+          on the heatsink. Three redesigns later, the last version was ready in late March,
           and the temperature problems were gone for good.
         </p>
       </div>
 
       <h2>Gallery</h2>
-      <!-- TODO(kanan): optional — a few words on how/where the lidar and camera were
-           mounted, since these photos happen to document that evolution. -->
       <div class="gallery">
         <figure>
           <img src="assets/img/dog/first-boot-woc.jpg" alt="First boot with the Mac mini connected">
@@ -158,7 +159,7 @@
         </figure>
         <figure>
           <img src="assets/img/dog/pres-spot.jpg" alt="The dog and poster at the Northeastern presentation">
-          <figcaption>My spot at the Northeastern presentation — dog on the floor, poster on its stand.</figcaption>
+          <figcaption>My spot at the Northeastern presentation.</figcaption>
         </figure>
       </div>
 
