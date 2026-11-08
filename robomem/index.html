@@ -22,12 +22,14 @@
   <link rel="stylesheet" href="../assets/css/site.css?v=2">
 
   <style>
+    :root { --c-carried: #1F5FBF; --c-rebuilt: #D06A12; --c-fail: #C8102E; --c-select: #4A4540; --c-ground: #A39886; --c-nograph: #CFC6B6; }
+    html[data-theme="dark"] { --c-carried: #6FA3F0; --c-rebuilt: #F0A050; --c-fail: #F0566B; --c-select: #8A847C; --c-ground: #6F675C; --c-nograph: #4A453F; }
+
     .paper-head { text-align: center; margin-top: 8px; }
     .paper-head h1 { font-size: clamp(28px, 5vw, 40px); line-height: 1.15; margin-bottom: 12px; }
     .paper-venue { color: var(--accent); font-size: 17px; font-weight: 500; margin: 0 0 18px; }
     .paper-authors { font-size: 18px; margin: 0 0 4px; }
     .paper-affil { color: var(--muted); font-size: 14.5px; margin: 0 0 4px; }
-    .wip { color: var(--muted); font-size: 14px; text-align: center; margin: 0 0 8px; }
     .paper-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 22px 0 30px; }
     .paper-buttons a, .paper-buttons span {
       padding: 7px 16px; border: 1px solid var(--border); border-radius: 999px;
@@ -36,12 +38,56 @@
     .paper-buttons a:hover { border-color: var(--accent); color: var(--accent); }
     .paper-buttons span { color: var(--muted); }
     .paper-buttons .gh { width: 15px; height: 15px; fill: currentColor; vertical-align: -2px; margin-right: 6px; }
-    .paper-fig { margin: 0 0 8px; }
-    .paper-fig img { display: block; width: 100%; height: auto; border-radius: 6px; }
+    h3 { font-family: var(--serif); font-weight: 500; font-size: 19px; margin: 30px 0 10px; }
+    .paper-fig { margin: 18px 0 22px; }
+    .paper-fig img, .paper-fig video { display: block; width: 100%; height: auto; border-radius: 6px; }
+    .paper-fig figcaption, .readout { color: var(--muted); font-size: 14.5px; line-height: 1.5; margin-top: 8px; }
+    .readout { min-height: 3em; }
     .bibtex {
       font-family: var(--mono); font-size: 13px; line-height: 1.5; background: var(--bg-soft);
       border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; overflow-x: auto;
     }
+
+    /* results table */
+    .tscroll { overflow-x: auto; margin: 14px 0 6px; }
+    table.res { border-collapse: collapse; width: 100%; font-size: 14.5px; font-variant-numeric: tabular-nums; }
+    table.res th, table.res td { padding: 6px 10px 6px 0; text-align: right; white-space: nowrap; }
+    table.res th:first-child, table.res td:first-child { text-align: left; }
+    table.res th { font-weight: 500; color: var(--muted); border-bottom: 1px solid var(--text); }
+    table.res tr + tr td { border-top: 1px solid var(--border); }
+
+    /* interactive charts */
+    .chart { margin: 16px 0 0; }
+    .chart svg { display: block; width: 100%; height: auto; font-family: var(--sans); }
+    .chart .grid { stroke: var(--border); stroke-width: 1; }
+    .chart .zero { stroke: var(--muted); stroke-width: 1.2; }
+    .chart .tick { fill: var(--muted); font-size: 13px; }
+    .chart .lbl { fill: var(--text); font-size: 13.5px; }
+    .chart .tick.on { fill: var(--text); font-weight: 600; }
+    .chart .hl { fill: var(--bg-soft); }
+    .chart .line { fill: none; stroke-width: 3; stroke-linejoin: round; }
+    .chart .c-carried { stroke: var(--c-carried); fill: var(--c-carried); }
+    .chart .c-rebuilt { stroke: var(--c-rebuilt); fill: var(--c-rebuilt); }
+    .chart .line.c-carried, .chart .line.c-rebuilt { fill: none; }
+    .chart .seg { cursor: pointer; }
+    .chart .seg:hover, .chart .seg.on { opacity: 0.8; }
+    .chart .s-move { fill: var(--c-fail); } .chart .s-select { fill: var(--c-select); }
+    .chart .s-ground { fill: var(--c-ground); } .chart .s-nograph { fill: var(--c-nograph); }
+    .chart .segtxt { fill: #fff; font-size: 12.5px; pointer-events: none; }
+    .chart .ci { stroke-width: 3; stroke-linecap: round; }
+    .chart .k-graph { stroke: var(--c-carried); fill: var(--c-carried); }
+    .chart .k-store { stroke: var(--text); fill: var(--text); }
+    .chart .hollow { fill: var(--bg); stroke-width: 2.5; }
+    .controls { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 0; }
+    .controls button {
+      border: 1px solid var(--border); background: var(--bg-soft); color: var(--text); border-radius: 999px;
+      padding: 4px 12px; font: inherit; font-size: 14px; cursor: pointer;
+    }
+    .controls button[aria-pressed="false"] { opacity: 0.45; }
+    .controls button i { display: inline-block; width: 18px; height: 0; border-top: 3px solid; vertical-align: middle; margin-right: 6px; }
+    .controls button.c-carried i { border-color: var(--c-carried); }
+    .controls button.c-rebuilt i { border-color: var(--c-rebuilt); }
+    .controls button.dashed i { border-top-style: dashed; }
   </style>
 
   <script>
@@ -70,7 +116,7 @@
 
   <main>
     <div class="wrap">
-      <!-- Poster QR target (kananaliyev.org/robomem). Add the arXiv link below once it is announced. -->
+      <!-- Poster QR target (kananaliyev.org/robomem). Numbers are from the paper (prelims workshop-paper-robomem-cr/root.tex). -->
       <div class="paper-head">
         <h1>Persistent Scene-Graph Memory on a Legged Robot: Separating Memory Gains from Execution Failure</h1>
         <p class="paper-venue">CoRL 2026 Workshop on Memory for Robot Foundation Models (RoboMem)</p>
@@ -83,7 +129,6 @@
 
         <div class="paper-buttons">
           <a href="aliyev-robomem-2026.pdf" target="_blank" rel="noopener">Paper (PDF)</a>
-          <span>arXiv (soon)</span>
           <span><svg class="gh" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>Code (soon)</span>
         </div>
       </div>
@@ -107,8 +152,153 @@
       <figure class="paper-fig">
         <img src="teaser.jpg" width="1464" height="892"
              alt="Isaac Sim render of a house with the Go2's logged paths for goals 1, 2 and 4 of one run, and callouts for where it stalled">
+        <figcaption>
+        One run from the sweep (house val_15, repeat 5, graph carried) on an Isaac Sim render with the walls cut down.
+The first time it's asked for the toilet, it takes 7 decisions and 18.6&nbsp;m to find it. When goal 4 asks again, it takes 2 decisions and 4.3&nbsp;m.
+      </figcaption>
       </figure>
-      <p class="wip">This page is a work in progress; videos and more results are coming.</p>
+
+      <h2>Problem</h2>
+      <p>
+        If a robot works in the same building every day, it shouldn't have to re-explore the place every time you ask
+it for something. Zero-shot object navigators like VLFM and SG-Nav throw their map away after each goal. Persistent-memory
+navigators like SSMG-Nav keep it across a chain of goals, usually as a 3D scene graph built online from RGB-D (Hydra,
+ConceptGraphs). The lifelong benchmarks they report on, like GOAT-Bench, run in Habitat, where the agent is a rigid cylinder
+that slides along walls and furniture instead of getting caught on them.
+      </p>
+      <p>
+        A dog doesn't slide. It catches on doorframes, gets wedged between furniture, and falls over. Nobody picks it
+back up in our setup, so a fall loses every goal left in that house. That caps how much any memory can help. It also skews
+the comparison itself, because if one robot stops moving more often than the other, part of the success gap is about walking
+and not memory. So we tag every failure with the stage it broke in and check how much of the memory gain is still there once
+execution is accounted for.
+      </p>
+
+      <h2>Method</h2>
+      <p>
+        Each house gets five object categories in the order A, B, C, A, B, so goals 4 and 5 ask for the same things as
+goals 1 and 2 with two other goals in between. Like in GOAT-Bench, a goal counts if the robot says it has arrived within
+1.0&nbsp;m of any instance of the category. A goal also ends if it burns through its 30,000 sim steps or if the robot falls.
+We don't right a fallen robot, so a fall fails the rest of the house too.
+      </p>
+      <p>
+        The robot is a Unitree Go2 in Isaac Sim with a front RGB-D camera, walking on a velocity-tracking policy trained
+with <code>unitree_rl_lab</code>. Hydra builds the scene graph from the RGB-D stream, and we ray-cast a 2D occupancy grid
+from depth. The SSMG-Nav planner hangs objects onto a skeleton graph of the free space. Qwen3.5-9B scores candidate places
+from their objects and a bird's-eye crop of the map, and VLFM's value map scores frontiers. A* plans on the occupancy grid
+with obstacles inflated by 0.20&nbsp;m, and pure pursuit turns the path into velocity commands for the gait policy. Object
+labels come straight from the simulator in every configuration, so detection errors stay out of the comparison.
+      </p>
+      <figure class="paper-fig">
+        <img src="hydra.jpg" width="1400" height="939" loading="lazy"
+             alt="Hydra's layered scene graph of one house: a building node, three room nodes, a graph of free-space places, and objects on the reconstructed mesh">
+        <figcaption>
+        Hydra's scene graph of one house after all five goals, with 3 rooms, 231 free-space places and 33 objects
+sitting on Hydra's mesh. Colour is the room a node belongs to. Grey nodes aren't in any room.
+      </figcaption>
+      </figure>
+      <p>
+        What we vary is what happens to the graph between goals. With the <b>graph carried</b>, one Hydra instance runs
+through all five goals in a house. With the <b>graph rebuilt</b>, every goal starts a fresh Hydra, and anything seen on
+earlier goals is hidden from target selection. Both keep the robot's pose and the occupancy grid, so they plan on the same
+free space either way. On top of that there's an object <b>record store</b>, a per-object database that survives Hydra's node
+merges. It gives the planner each candidate's observation history and a log of where earlier goals already searched. Two
+factors with two levels each make four configurations.
+      </p>
+      <p>
+        The houses are 25 single-floor ProcTHOR houses, 155 to 399&nbsp;m², each with all five goal categories (sofa, bed,
+toilet, sink, houseplant). Every configuration runs all 125 goals five times, so 625 goals per configuration and 2,500 total.
+We compare two configurations on pairs of episodes with the same repeat, house and goal. Significance is an exact sign test
+on the pairs whose outcomes differ, and the 95% intervals come from a bootstrap that resamples whole houses.
+      </p>
+
+      <h2>Results</h2>
+      <h3>Carrying the scene graph</h3>
+      <p>
+        Both configurations start goal 1 with an empty graph, so memory can't show up until goal 2. Over 625 pairs,
+carrying the graph takes success rate from 0.381 to 0.506 (+0.125, interval [+0.059, +0.189], <i>p</i>&nbsp;&lt;&nbsp;0.001)
+and SPL from 0.194 to 0.303. The gap grows with the graph, from +0.01 on goal 1 to +0.21 on goal 4. Tap a goal in the chart
+for its numbers, and toggle the record-store configurations on and off.
+      </p>
+      <div class="chart" id="byq"></div>
+      <div class="controls" id="byq-legend"></div>
+      <p class="readout" id="byq-read"></p>
+      <p>
+        On a repeated category, the carried graph mostly helps when the robot actually found the object the first time.
+After a success on goal 1, goal 4 succeeds in 53 of 86 runs (0.62) with the graph carried and 28 of 85 (0.33) with it
+rebuilt. After a failure on goal 1 it's 6 of 39 (0.15) against 5 of 40 (0.12).
+      </p>
+      <div class="tscroll">
+        <table class="res">
+          <tr><th>configuration</th><th>SR</th><th>SR@0.5</th><th>oracle SR</th><th>SPL</th><th>falls</th><th>lost before 1st decision</th></tr>
+          <tr><td>graph carried</td><td>0.506</td><td>0.483</td><td>0.594</td><td>0.303</td><td>20</td><td>52</td></tr>
+          <tr><td>carried + record store</td><td>0.510</td><td>0.490</td><td>0.587</td><td>0.295</td><td>18</td><td>41</td></tr>
+          <tr><td>graph rebuilt</td><td>0.381</td><td>0.373</td><td>0.448</td><td>0.194</td><td>26</td><td>133</td></tr>
+          <tr><td>rebuilt + record store</td><td>0.432</td><td>0.414</td><td>0.494</td><td>0.219</td><td>25</td><td>100</td></tr>
+        </table>
+      </div>
+      <p class="readout">625 goals per configuration. Falls count house runs that ended in a fall.</p>
+
+      <h3>Where it fails</h3>
+      <p>
+        Every failed goal gets one stage, checked in order. GROUND means the agent said the object isn't there, which is
+always wrong since every category exists in every house. SELECT means it never picked the right target within the budget.
+MOVE means the robot stopped making progress or fell before the agent was done. Goals where Hydra never produced a graph get
+their own bucket instead of going into SELECT. Of 1,357 failures, 866 (63.8%) are MOVE.
+      </p>
+      <div class="chart" id="fail"></div>
+      <div class="controls" id="fail-ctl"></div>
+      <p class="readout" id="fail-read"></p>
+      <p>
+        We checked every stall site against the simulator's colliders and against the robot's own live map. Of 575
+stalls, 545 (95%) end within 0.35&nbsp;m of an obstacle, half the Go2's length, while only 10.4% of path points are that
+close. The median clearance is 0.21&nbsp;m, right at the planner's 0.20&nbsp;m inflation, and in 86% of stalls the live map
+already had that obstacle. Of the 89 falls, 53 happen more than 0.35&nbsp;m from any obstacle, which points at the gait.
+We didn't log contacts, so we can't confirm it.
+      </p>
+      <figure class="paper-fig">
+        <img src="clearance.jpg" width="1400" height="587" loading="lazy"
+             alt="Top-down Go2 next to a wall: the planner's 0.20 m disc fits beside the wall while the robot's body reaches into it">
+        <figcaption>
+        The planner keeps a 0.20&nbsp;m disc around the robot's centre clear, and the Go2 is 0.70&nbsp;m long. At the median
+stall clearance of 0.21&nbsp;m, turned toward the wall, part of the body is already inside the obstacle (red).
+      </figcaption>
+      </figure>
+      <p>
+        Memory moves stalls around more than it gets rid of them. On the repeated goals, carrying the graph halves
+exploration stalls (50 to 25), and approach stalls go from 8 to 39.
+      </p>
+
+      <h3>Execution failure in memory comparisons</h3>
+      <p>
+        The rebuilt configurations lose a lot more goals before making a single decision (133 against 52), and those
+losses get counted as part of the scene-graph gain. Keeping only the pairs where both robots made at least one decision
+removes that gap. That filter conditions on something that happens after the treatment, so we use it as a sensitivity check
+and keep the full set as the main estimate.
+      </p>
+      <p>
+        The record store is where this bites. With the graph rebuilt it looks like it helps (+0.051,
+<i>p</i>&nbsp;=&nbsp;0.023), but its 32 extra successes come with 33 fewer goals lost before the first decision. Keep only the
+pairs where both robots decided and its gain drops to +0.021 (<i>p</i>&nbsp;=&nbsp;0.47). The scene-graph gain holds at +0.090
+(<i>p</i>&nbsp;&lt;&nbsp;0.001). Switch between the two sets of pairs below. Filled dots are <i>p</i>&nbsp;&lt;&nbsp;0.05 by the
+sign test.
+      </p>
+      <div class="chart" id="con"></div>
+      <div class="controls" id="con-ctl"></div>
+      <p class="readout" id="con-read"></p>
+      <p>
+        If you're evaluating memory on a legged robot, report execution-failure rates for every configuration, along with
+the effect on pairs where both robots actually made a decision.
+      </p>
+
+      <h2>Limitations</h2>
+      <ul>
+        <li>Everything here is one simulator, one locomotion policy and one house generator. The execution share could look different on the real dog.</li>
+        <li>Object labels and poses come from the simulator. That keeps perception error out of the memory comparison, and it also makes absolute success an upper bound.</li>
+        <li>Restarting Hydra for the rebuilt configurations left 46 goals with no graph. We haven't run a matched control that re-detects objects at every goal.</li>
+        <li>Recovery is open-loop and we didn't log contact forces, so being near an obstacle is evidence of a clearance failure, not proof.</li>
+        <li>We didn't run an ideal-body baseline, so we can't say how much success the legged body itself costs.</li>
+      </ul>
 
       <h2 id="bibtex">BibTeX</h2>
       <pre class="bibtex">@inproceedings{aliyev2026persistent,
@@ -131,5 +321,169 @@
   </footer>
 
   <script src="../assets/js/theme.js"></script>
+  <script>
+  (function () {
+    var NS = "http://www.w3.org/2000/svg";
+    function el(tag, attrs, parent, text) {
+      var e = document.createElementNS(NS, tag);
+      for (var k in attrs) e.setAttribute(k, attrs[k]);
+      if (text != null) e.textContent = text;
+      if (parent) parent.appendChild(e);
+      return e;
+    }
+    function svg(box, w, h, label) {
+      box.innerHTML = "";
+      return el("svg", { viewBox: "0 0 " + w + " " + h, role: "img", "aria-label": label }, box);
+    }
+    function button(parent, html, cls, pressed, onclick) {
+      var b = document.createElement("button");
+      b.type = "button"; b.className = cls || ""; b.innerHTML = html;
+      b.setAttribute("aria-pressed", pressed ? "true" : "false");
+      b.addEventListener("click", function () { onclick(b); });
+      parent.appendChild(b);
+      return b;
+    }
+    function signed(v) { return (v < 0 ? "−" : "+") + Math.abs(v).toFixed(3); }
+
+    // ---- success rate by goal (paper Fig. 3) ----
+    var CFG = [
+      { key: "carried", name: "graph carried", cls: "c-carried", dash: "", sr: [0.69, 0.50, 0.46, 0.47, 0.42] },
+      { key: "carried-store", name: "carried + record store", cls: "c-carried", dash: "7 5", sr: [0.67, 0.50, 0.51, 0.44, 0.43] },
+      { key: "rebuilt", name: "graph rebuilt", cls: "c-rebuilt", dash: "", sr: [0.68, 0.40, 0.32, 0.26, 0.24] },
+      { key: "rebuilt-store", name: "rebuilt + record store", cls: "c-rebuilt", dash: "7 5", sr: [0.65, 0.49, 0.43, 0.36, 0.23] }
+    ];
+    var shown = { "carried": true, "rebuilt": true, "carried-store": false, "rebuilt-store": false };
+    var CAT = ["A", "B", "C", "A", "B"], sel = 3;
+    var byq = document.getElementById("byq"), byqRead = document.getElementById("byq-read");
+    function drawByq() {
+      var W = 660, H = 290, L = 52, R = 18, T = 12, B = 46, step = (W - L - R) / 4;
+      var X = function (i) { return L + i * step; };
+      var Y = function (v) { return T + (0.75 - v) / 0.6 * (H - T - B); };
+      var s = svg(byq, W, H, "Success rate by goal for each configuration");
+      el("rect", { x: X(sel) - step / 2 + 6, y: T, width: step - 12, height: H - T - B, rx: 6, "class": "hl" }, s);
+      [0.2, 0.4, 0.6].forEach(function (v) {
+        el("line", { x1: L - 6, x2: W - R, y1: Y(v), y2: Y(v), "class": "grid" }, s);
+        el("text", { x: L - 12, y: Y(v) + 4, "text-anchor": "end", "class": "tick" }, s, v.toFixed(1));
+      });
+      el("text", { x: 14, y: (T + H - B) / 2, "text-anchor": "middle", "class": "tick",
+                   transform: "rotate(-90 14 " + (T + H - B) / 2 + ")" }, s, "success rate");
+      for (var i = 0; i < 5; i++) {
+        el("text", { x: X(i), y: H - 24, "text-anchor": "middle", "class": "tick" + (i === sel ? " on" : "") }, s, "goal " + (i + 1));
+        el("text", { x: X(i), y: H - 6, "text-anchor": "middle", "class": "tick" + (i === sel ? " on" : "") }, s, CAT[i]);
+      }
+      CFG.forEach(function (c) {
+        if (!shown[c.key]) return;
+        el("polyline", { points: c.sr.map(function (v, i) { return X(i) + "," + Y(v); }).join(" "),
+                         "class": "line " + c.cls, "stroke-dasharray": c.dash }, s);
+        c.sr.forEach(function (v, i) { el("circle", { cx: X(i), cy: Y(v), r: i === sel ? 6 : 4, "class": c.cls }, s); });
+      });
+      [0, 1, 2, 3, 4].forEach(function (i) {
+        var hit = el("rect", { x: X(i) - step / 2, y: 0, width: step, height: H, fill: "transparent", style: "cursor:pointer" }, s);
+        hit.addEventListener("mouseenter", function () { if (sel !== i) { sel = i; drawByq(); } });
+        hit.addEventListener("click", function () { sel = i; drawByq(); });
+      });
+      var vals = CFG.filter(function (c) { return shown[c.key]; })
+                    .map(function (c) { return c.name + " " + c.sr[sel].toFixed(2); });
+      byqRead.textContent = "Goal " + (sel + 1) + (sel >= 3 ? ", a repeat of goal " + (sel - 2) : "") +
+        ". " + (vals.length ? vals.join(" · ") : "No configuration selected") + ". 125 goals per point.";
+    }
+    var byqLegend = document.getElementById("byq-legend");
+    CFG.forEach(function (c) {
+      button(byqLegend, "<i></i>" + c.name, c.cls + (c.dash ? " dashed" : ""), shown[c.key], function (b) {
+        shown[c.key] = !shown[c.key]; b.setAttribute("aria-pressed", shown[c.key] ? "true" : "false"); drawByq();
+      });
+    });
+    drawByq();
+
+    // ---- failure stages (paper Table 1) ----
+    var STAGES = [
+      { name: "MOVE", cls: "s-move", def: "The robot stopped making progress or fell before the agent finished." },
+      { name: "SELECT", cls: "s-select", def: "The agent never chose the right target within its budget." },
+      { name: "GROUND", cls: "s-ground", def: "The agent declared the object absent, which is always wrong here." },
+      { name: "no graph", cls: "s-nograph", def: "Hydra never produced a graph, so the agent had nothing to decide on." }
+    ];
+    var FAIL = [
+      { name: "graph carried", v: [223, 67, 19, 0] },
+      { name: "carried + record store", v: [207, 87, 12, 0] },
+      { name: "graph rebuilt", v: [231, 99, 32, 25] },
+      { name: "rebuilt + record store", v: [205, 95, 34, 21] }
+    ];
+    var asShare = false, failSel = [2, 0];
+    var fail = document.getElementById("fail"), failRead = document.getElementById("fail-read");
+    function drawFail() {
+      var W = 660, rowH = 44, T = 6, L = 172, R = 50, H = T + rowH * FAIL.length;
+      var s = svg(fail, W, H, "Failure stages per configuration");
+      FAIL.forEach(function (f, r) {
+        var tot = f.v.reduce(function (a, b) { return a + b; }, 0);
+        var scale = (W - L - R) / (asShare ? tot : 387), x = L, y = T + r * rowH;
+        el("text", { x: L - 10, y: y + 22, "text-anchor": "end", "class": "lbl" }, s, f.name);
+        f.v.forEach(function (n, k) {
+          if (!n) return;
+          var w = n * scale;
+          var seg = el("rect", { x: x, y: y + 4, width: Math.max(w - 1.5, 0.5), height: rowH - 12,
+                                 "class": "seg " + STAGES[k].cls + (failSel[0] === r && failSel[1] === k ? " on" : "") }, s);
+          if (w > 44) el("text", { x: x + 7, y: y + 25, "class": "segtxt" }, s,
+                         asShare ? Math.round(100 * n / tot) + "%" : String(n));
+          seg.addEventListener("mouseenter", function () { failSel = [r, k]; drawFail(); });
+          seg.addEventListener("click", function () { failSel = [r, k]; drawFail(); });
+          x += w;
+        });
+        el("text", { x: x + 6, y: y + 25, "class": "tick" }, s, String(tot));
+      });
+      var f = FAIL[failSel[0]], st = STAGES[failSel[1]], n = f.v[failSel[1]];
+      var tot = f.v.reduce(function (a, b) { return a + b; }, 0);
+      failRead.textContent = st.name + ", " + f.name + ". " + n + " of " + tot + " failures (" +
+        Math.round(100 * n / tot) + "%). " + st.def;
+    }
+    var failCtl = document.getElementById("fail-ctl"), bCount, bShare;
+    function setShare(v) {
+      asShare = v; bCount.setAttribute("aria-pressed", v ? "false" : "true"); bShare.setAttribute("aria-pressed", v ? "true" : "false"); drawFail();
+    }
+    bCount = button(failCtl, "failure counts", "", true, function () { setShare(false); });
+    bShare = button(failCtl, "share of failures", "", false, function () { setShare(true); });
+    drawFail();
+
+    // ---- paired contrasts (paper Table 5) ----
+    var CON = [
+      { name: "scene graph, no record store", k: "k-graph", all: [0.125, 0.059, 0.189, "< 0.001", 625], dec: [0.090, 0.027, 0.154, "< 0.001", 454] },
+      { name: "scene graph, with record store", k: "k-graph", all: [0.078, 0.019, 0.138, "0.001", 625], dec: [0.034, -0.031, 0.101, "0.19", 496] },
+      { name: "record store, graph carried", k: "k-store", all: [0.005, -0.058, 0.072, "0.89", 625], dec: [0.000, -0.060, 0.060, "1.00", 542] },
+      { name: "record store, graph rebuilt", k: "k-store", all: [0.051, -0.003, 0.106, "0.023", 625], dec: [0.021, -0.039, 0.079, "0.47", 427] }
+    ];
+    var useDec = false, conSel = 3;
+    var con = document.getElementById("con"), conRead = document.getElementById("con-read");
+    function sig(p) { return p.charAt(0) === "<" || parseFloat(p) < 0.05; }
+    function drawCon() {
+      var W = 660, rowH = 46, T = 8, B = 30, L = 222, R = 24, H = T + rowH * CON.length + B;
+      var lo = -0.1, hi = 0.2, X = function (v) { return L + (v - lo) / (hi - lo) * (W - L - R); };
+      var s = svg(con, W, H, "Paired success-rate differences with 95% intervals");
+      [-0.1, 0, 0.1, 0.2].forEach(function (v) {
+        el("line", { x1: X(v), x2: X(v), y1: T, y2: H - B, "class": v === 0 ? "zero" : "grid" }, s);
+        el("text", { x: X(v), y: H - 10, "text-anchor": "middle", "class": "tick" }, s, v === 0 ? "0" : signed(v).slice(0, 4));
+      });
+      CON.forEach(function (c, r) {
+        var d = useDec ? c.dec : c.all, y = T + r * rowH + rowH / 2;
+        el("text", { x: L - 12, y: y + 5, "text-anchor": "end", "class": "lbl" }, s, c.name);
+        el("line", { x1: X(d[1]), x2: X(d[2]), y1: y, y2: y, "class": "ci " + c.k }, s);
+        el("circle", { cx: X(d[0]), cy: y, r: r === conSel ? 8 : 6.5, "class": c.k + (sig(d[3]) ? "" : " hollow") }, s);
+        var hit = el("rect", { x: 0, y: y - rowH / 2, width: W, height: rowH, fill: "transparent", style: "cursor:pointer" }, s);
+        hit.addEventListener("mouseenter", function () { if (conSel !== r) { conSel = r; drawCon(); } });
+        hit.addEventListener("click", function () { conSel = r; drawCon(); });
+      });
+      var c = CON[conSel], d = useDec ? c.dec : c.all;
+      conRead.textContent = c.name.charAt(0).toUpperCase() + c.name.slice(1) + ", " +
+        (useDec ? "pairs where both robots decided" : "all pairs") + ". Success rate " + signed(d[0]) +
+        ", interval [" + signed(d[1]) + ", " + signed(d[2]) + "], p " + (d[3].charAt(0) === "<" ? d[3] : "= " + d[3]) +
+        ", " + d[4] + " pairs.";
+    }
+    var conCtl = document.getElementById("con-ctl"), bAll, bDec;
+    function setDec(v) {
+      useDec = v; bAll.setAttribute("aria-pressed", v ? "false" : "true"); bDec.setAttribute("aria-pressed", v ? "true" : "false"); drawCon();
+    }
+    bAll = button(conCtl, "all pairs", "", true, function () { setDec(false); });
+    bDec = button(conCtl, "both robots decided", "", false, function () { setDec(true); });
+    drawCon();
+  })();
+  </script>
 </body>
 </html>
