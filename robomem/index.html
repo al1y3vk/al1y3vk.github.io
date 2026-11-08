@@ -1,13 +1,135 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- Poster QR target. Repoint the two links below to arXiv/OpenReview once public; the QR stays valid. -->
-<meta http-equiv="refresh" content="0; url=aliyev-robomem-2026.pdf">
-<title>RoboMem paper</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Persistent Scene-Graph Memory on a Legged Robot</title>
+  <meta name="description" content="Persistent scene-graph memory for object-goal navigation on a simulated Unitree Go2: how much of the memory gain survives a body that can stall and fall. CoRL 2026 RoboMem workshop.">
+  <!-- Link previews (LinkedIn etc.) -->
+  <meta property="og:title" content="Persistent Scene-Graph Memory on a Legged Robot: Separating Memory Gains from Execution Failure">
+  <meta property="og:description" content="Kanan Aliyev, Niveditha Kalavakonda. CoRL 2026 Workshop on Memory for Robot Foundation Models (RoboMem).">
+  <meta property="og:image" content="https://kananaliyev.org/robomem/teaser.jpg">
+  <meta property="og:url" content="https://kananaliyev.org/robomem/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="../assets/img/k.ico">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../assets/css/site.css?v=2">
+
+  <style>
+    .paper-head { text-align: center; margin-top: 8px; }
+    .paper-head h1 { font-size: clamp(28px, 5vw, 40px); line-height: 1.15; margin-bottom: 12px; }
+    .paper-venue { color: var(--accent); font-size: 17px; font-weight: 500; margin: 0 0 18px; }
+    .paper-authors { font-size: 18px; margin: 0 0 4px; }
+    .paper-affil { color: var(--muted); font-size: 14.5px; margin: 0 0 4px; }
+    .wip { color: var(--muted); font-size: 14px; text-align: center; margin: 0 0 8px; }
+    .paper-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 22px 0 30px; }
+    .paper-buttons a, .paper-buttons span {
+      padding: 7px 16px; border: 1px solid var(--border); border-radius: 999px;
+      font-size: 15px; text-decoration: none; color: var(--text); background: var(--bg-soft);
+    }
+    .paper-buttons a:hover { border-color: var(--accent); color: var(--accent); }
+    .paper-buttons span { color: var(--muted); }
+    .paper-buttons .gh { width: 15px; height: 15px; fill: currentColor; vertical-align: -2px; margin-right: 6px; }
+    .paper-fig { margin: 0 0 8px; }
+    .paper-fig img { display: block; width: 100%; height: auto; border-radius: 6px; }
+    .bibtex {
+      font-family: var(--mono); font-size: 13px; line-height: 1.5; background: var(--bg-soft);
+      border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; overflow-x: auto;
+    }
+  </style>
+
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("theme");
+        if (!t) t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
-<p><a href="aliyev-robomem-2026.pdf">Persistent Scene-Graph Memory on a Legged Robot: Separating Memory Gains from Execution Failure (PDF)</a></p>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="../index.html">Kanan Aliyev</a>
+      <nav class="nav">
+        <a href="../index.html#about">About</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../assets/Kanan-Aliyev-CV.pdf" target="_blank" rel="noopener">CV</a>
+        <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <!-- Poster QR target (kananaliyev.org/robomem). Add the arXiv link below once it is announced. -->
+      <div class="paper-head">
+        <h1>Persistent Scene-Graph Memory on a Legged Robot: Separating Memory Gains from Execution Failure</h1>
+        <p class="paper-venue">CoRL 2026 Workshop on Memory for Robot Foundation Models (RoboMem)</p>
+        <p class="paper-authors">
+          <a href="../index.html">Kanan Aliyev</a><sup>1</sup> &nbsp;·&nbsp;
+          <a href="https://nkalavak.github.io/" target="_blank" rel="noopener">Niveditha Kalavakonda</a><sup>2</sup>
+        </p>
+        <p class="paper-affil"><sup>1</sup>Khoury College of Computer Sciences &nbsp;·&nbsp; <sup>2</sup>Dept. of Mechanical and Industrial Engineering</p>
+        <p class="paper-affil">Northeastern University, Seattle</p>
+
+        <div class="paper-buttons">
+          <a href="aliyev-robomem-2026.pdf" target="_blank" rel="noopener">Paper (PDF)</a>
+          <span>arXiv (soon)</span>
+          <span><svg class="gh" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>Code (soon)</span>
+        </div>
+      </div>
+
+      <h2>Abstract</h2>
+      <p>
+        A robot that returns to the same building can reuse its map instead of searching from
+        scratch. The lifelong object-navigation benchmarks that persistent-memory navigators report
+        on model the agent as a rigid cylinder, so it is not known how much of the memory benefit
+        survives a body that can catch on furniture and fall. We evaluate persistent scene-graph
+        memory for chained object-goal navigation on a simulated Unitree Go2 quadruped in Isaac Sim,
+        over 2,500 paired episodes in 25 houses, five chained subtasks per house. Carrying the scene
+        graph across subtasks raises success rate from 0.38 to 0.51, and the gain grows as the graph
+        accumulates, from none on the first subtask to 0.21 on the fourth. Of 1,357 failures, 64% are
+        stalls or falls, and 95% of the stalls end within half a body length of an obstacle. Without
+        the carried scene graph, an object record store raises success at <i>p</i>&nbsp;=&nbsp;0.023;
+        restricted to pairs in which both robots made at least one decision, the same comparison
+        gives <i>p</i>&nbsp;=&nbsp;0.47.
+      </p>
+
+      <figure class="paper-fig">
+        <img src="teaser.jpg" width="1464" height="892"
+             alt="Isaac Sim render of a house with the Go2's logged paths for goals 1, 2 and 4 of one run, and callouts for where it stalled">
+      </figure>
+      <p class="wip">This page is a work in progress; videos and more results are coming.</p>
+
+      <h2 id="bibtex">BibTeX</h2>
+      <pre class="bibtex">@inproceedings{aliyev2026persistent,
+  title     = {Persistent Scene-Graph Memory on a Legged Robot:
+               Separating Memory Gains from Execution Failure},
+  author    = {Aliyev, Kanan and Kalavakonda, Niveditha},
+  booktitle = {CoRL 2026 Workshop on Memory for Robot
+               Foundation Models (RoboMem)},
+  year      = {2026}
+}</pre>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>© 2026 Kanan Aliyev</span>
+      <span>business@kananaliyev.org</span>
+    </div>
+  </footer>
+
+  <script src="../assets/js/theme.js"></script>
 </body>
 </html>
