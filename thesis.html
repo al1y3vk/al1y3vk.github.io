@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scene-Graph Memory on a Go2 — Kanan Aliyev</title>
+  <meta name="description" content="Master's thesis: persistent scene-graph memory for object-goal navigation on a Unitree Go2.">
+
+  <link rel="icon" href="assets/img/k.ico">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/site.css?v=2">
+
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem("theme");
+        if (!t) t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="index.html">Kanan Aliyev</a>
+      <nav class="nav">
+        <a href="index.html#about">About</a>
+        <a href="index.html#projects">Projects</a>
+        <a href="assets/Kanan-Aliyev-CV.pdf" target="_blank" rel="noopener">CV</a>
+        <button class="theme-toggle" type="button" aria-label="Toggle theme">☾</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <a class="back" href="index.html#projects">← Projects</a>
+      <h1>Scene-Graph Memory on a Go2</h1>
+
+      <p class="tagline">
+        Persistent scene-graph memory for object-goal navigation on a legged robot
+      </p>
+
+      <ul class="meta">
+        <li><strong>Purpose</strong> — Master's thesis, advised by <a href="https://nkalavak.github.io/" target="_blank" rel="noopener">Prof. Nivii Kalavakonda</a></li>
+        <li><strong>Stack</strong> — Unitree Go2 · Isaac Sim · Hydra 3D scene graphs · ROS 2</li>
+        <li><strong>When</strong> — June 2026 – present</li>
+      </ul>
+
+      <p class="lede">
+        The goal: a Go2 that explores a building it has never seen, stairs included, remembers
+        what it finds, and takes you wherever you ask. This page follows the work toward that.
+        I'll start adding the timeline soon.
+      </p>
+
+      <h2>Side quests along the way</h2>
+
+      <p>So far, one side quest: a paper. The main work keeps going.</p>
+
+      <!-- Git-graph timeline, newest on top. Main-line entries: class "g-row main".
+           A side quest: g-link merge, g-row side (one or more), g-link fork. -->
+      <ol class="graph">
+        <li class="g-row main tip">
+          <span class="g-dot"></span>
+          <div class="g-body"><span class="g-when">Now</span><p>Still working toward the goal.</p></div>
+        </li>
+        <li class="g-link" aria-hidden="true">
+          <svg viewBox="0 0 48 28" preserveAspectRatio="none"><path d="M34 28 C34 14 10 14 10 0"/></svg>
+        </li>
+        <li class="g-row side">
+          <span class="g-dot"></span>
+          <div class="g-body">
+            <span class="g-when">Fall 2026</span>
+            <p>Side quest: published
+              "<a href="robomem/aliyev-robomem-2026.pdf" target="_blank" rel="noopener">Persistent Scene-Graph Memory on a Legged Robot: Separating Memory Gains from Execution Failure</a>",
+              accepted at CoRL 2026 Late Breaking Results and the CoRL 2026 RoboMem workshop.</p>
+          </div>
+        </li>
+        <li class="g-link" aria-hidden="true">
+          <svg viewBox="0 0 48 28" preserveAspectRatio="none"><path d="M10 28 C10 14 34 14 34 0"/></svg>
+        </li>
+        <li class="g-row main root">
+          <span class="g-dot"></span>
+          <div class="g-body"><span class="g-when">Jun 2026</span><p>Started the thesis.</p></div>
+        </li>
+      </ol>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>© 2026 Kanan Aliyev</span>
+      <span>business@kananaliyev.org</span>
+    </div>
+  </footer>
+
+  <script src="assets/js/theme.js"></script>
+</body>
+</html>
